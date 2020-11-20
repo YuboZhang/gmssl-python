@@ -145,7 +145,8 @@ class CryptSM2(object):
         # 验签函数，sign签名r||s，E消息hash，public_key公钥
         r = int(Sign[0:self.para_len], 16)
         s = int(Sign[self.para_len:2*self.para_len], 16)
-        e = int(data.hex(), 16)
+        #e = int(data.hex(), 16)
+        e = int(data, 16)
         t = (r + s) % int(self.ecc_table['n'], base=16)
         if t == 0:
             return 0
@@ -166,9 +167,9 @@ class CryptSM2(object):
         return (r == ((e + x) % int(self.ecc_table['n'], base=16)))
 
     def sign(self, data, K):  # 签名函数, data消息的hash，private_key私钥，K随机数，均为16进制字符串
-        E = data.hex() # 消息转化为16进制字符串
-        e = int(E, 16)
-
+        #E = data.hex() # 消息转化为16进制字符串
+        #e = int(E, 16)
+        e = int(data, 16)
         d = int(self.private_key, 16)
         k = int(K, 16)
 
@@ -179,7 +180,8 @@ class CryptSM2(object):
         if R == 0 or R + k == int(self.ecc_table['n'], base=16):
             return None
         d_1 = pow(d+1, int(self.ecc_table['n'], base=16) - 2, int(self.ecc_table['n'], base=16))
-        S = (d_1*(k + R) - R) % int(self.ecc_table['n'], base=16)
+        #S = (d_1*(k + R) - R) % int(self.ecc_table['n'], base=16)
+        S = (d_1 * (k - R*d)) % int(self.ecc_table['n'], base=16)
         if S == 0:
             return None
         else:
