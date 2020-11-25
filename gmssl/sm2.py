@@ -180,8 +180,8 @@ class CryptSM2(object):
         if R == 0 or R + k == int(self.ecc_table['n'], base=16):
             return None
         d_1 = pow(d+1, int(self.ecc_table['n'], base=16) - 2, int(self.ecc_table['n'], base=16))
-        #S = (d_1*(k + R) - R) % int(self.ecc_table['n'], base=16)
-        S = (d_1 * (k - R*d)) % int(self.ecc_table['n'], base=16)
+        S = (d_1*(k + R) - R) % int(self.ecc_table['n'], base=16)
+        #S = (d_1 * (k - R*d)) % int(self.ecc_table['n'], base=16)
         if S == 0:
             return None
         else:
